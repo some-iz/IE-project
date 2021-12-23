@@ -5,7 +5,7 @@
 
 ### دموی پروژه
 جهت نمایش دمو روی این لینک کلیک نمایید : [https://mellat-test.herokuapp.com/](https://mellat-test.herokuapp.com/)
-
+لطفا با فیلترشکن سایت را باز نمایید!!!
 
 
 #### Pre-installation
@@ -22,13 +22,13 @@ Ensure [Node.js  >=4](https://nodejs.org/en/download/), [NPM](https://docs.npmjs
         ```
         cd /path/to/install/location
         
-        git clone https://github.com/[your_username]/poster-shop.git
+        git clone https://github.com/[your_username]/IE-project.git
         ```
 
 2. Change directory into the local clone of the repository
 
     ```
-    cd poster-shop
+    cd IE-project
     ```
 
 3. Install dependencies
